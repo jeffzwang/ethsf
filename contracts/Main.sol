@@ -34,10 +34,10 @@ contract StayPlatform is ERC2771Context, ERC721 {
 
     mapping(address => uint256) private _balances;
 
-    mapping(address => uint256) private hostNetRatings;
-    mapping(address => uint256) private hostTotalRatings;
-    mapping(address => uint256) private guestNetRatings;
-    mapping(address => uint256) private guestTotalRatings;
+    mapping(address => uint256) public hostNetRatings;
+    mapping(address => uint256) public hostTotalRatings;
+    mapping(address => uint256) public guestNetRatings;
+    mapping(address => uint256) public guestTotalRatings;
 
     // Base URI
     string private _baseURIextended;
