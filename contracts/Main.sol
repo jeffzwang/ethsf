@@ -130,6 +130,51 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
         return string(abi.encodePacked(base, tokenId.toString()));
     }
 
+    function createStayTransactionWithoutAuth(
+        uint256 startTime,
+        uint256 endTime,
+        uint256 price,
+        address host,
+        uint256 arbitrationDeadline,
+        address arbiter,
+        string memory _tokenURI,
+        address verifierAddress
+    ) public payable returns (uint256 tokenId) {
+        require(host != _msgSender(), "host cannot be guest");
+
+        ERC20 usdc = ERC20(erc20ContractAddress);
+        bool transferSuccess = usdc.transferFrom(
+            _msgSender(),
+            address(this),
+            price
+        );
+        require(transferSuccess, "transfer failed");
+        _balances[host] += price;
+
+        // Convert _tokenURI to a uint256 using hashing.
+        // This is to prevent the same _tokenURI from being used twice.
+        tokenId = uint256(keccak256(abi.encodePacked(_tokenURI)));
+        // Print the tokenID as a hex string.
+        console.log("tokenId: %s", tokenId.toHexString());
+
+        stayTransactions[tokenId] = StayTransaction(
+            startTime,
+            endTime,
+            price,
+            _msgSender(),
+            host,
+            arbitrationDeadline,
+            arbiter,
+            _tokenURI,
+            false,
+            false
+        );
+
+        _safeMint(_msgSender(), tokenId);
+        _setTokenURI(tokenId, _tokenURI);
+        return tokenId;
+    }
+
     function createStayTransaction(
         uint256 startTime,
         uint256 endTime,
