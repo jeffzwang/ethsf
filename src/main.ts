@@ -6,6 +6,8 @@ import cors from '@koa/cors';
 import Router from '@koa/router';
 import { getListings } from '/src/routes/getListings';
 import { createListing } from '/src/routes/createListing';
+import { submitPolygonIdVerification } from '/src/routes/submitPolygonIdVerification';
+import { getPolygonIdVerificationParams } from '/src/routes/getPolygonIdVerificationParams';
 
 const main = async () => {
   const app = new Koa();
@@ -18,6 +20,8 @@ const main = async () => {
 
   router.post('/getListings', getListings);
   router.post('/createListing', createListing);
+  router.post('/getPolygonIdVerificationParams', getPolygonIdVerificationParams);
+  router.post('/submitPolygonIdVerification', submitPolygonIdVerification);
   app.use(router.routes());
 
   const port = 3001;

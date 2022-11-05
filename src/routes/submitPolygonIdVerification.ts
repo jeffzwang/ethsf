@@ -5,7 +5,7 @@ import { Listing } from '/src/lib/listing';
 
 const pinata = new pinataSDK(process.env.PINATA_API_KEY!, process.env.PINATA_API_SECRET!);
 
-export const getListings = async (
+export const submitPolygonIdVerification = async (
   ctx: Context,
 ) => {
   const pinataResp = await pinata.pinList({ metadata: { keyvalues: { 'type': { value: 'listing', op: 'eq' } } } });
