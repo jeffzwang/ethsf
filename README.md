@@ -1,13 +1,5 @@
-# Sample Hardhat Project
+# Glider
+Glider is a tool that helps you easily enable gasless transactions on EVM
+chains by setting up painless infrastructure for EIP-2771.
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+See https://docs.useglider.xyz/ for full docs.

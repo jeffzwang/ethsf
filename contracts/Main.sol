@@ -4,13 +4,15 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 // for console.log usage
 import "hardhat/console.sol";
 
-contract StayPlatform is ERC2771Context, ERC721 {
+contract StayPlatform is ERC2771Context, ERC721, EIP712 {
     using Strings for uint256;
 
     address private owner;
+    address private erc20ContractAddress;
 
     struct StayTransaction {
         uint256 startTime;
@@ -23,9 +25,15 @@ contract StayPlatform is ERC2771Context, ERC721 {
         uint256 arbitrationDeadline;
         // If address(0x0), no arbitration.
         address arbiter;
+        string tokenURI;
         bool hostWasRated;
         bool guestWasRated;
     }
+
+    bytes32 private constant _TYPEHASH =
+        keccak256(
+            "StayTransaction(uint256 startTime,uint256 endTime,uint256 price,address guest,address host,uint256 arbitrationDeadline,address arbiter)"
+        );
 
     mapping(uint256 => string) private _tokenURIs;
 
@@ -42,11 +50,13 @@ contract StayPlatform is ERC2771Context, ERC721 {
     // Base URI
     string private _baseURIextended;
 
-    constructor(address trustedForwarder_)
+    constructor(address trustedForwarder_, address erc20Contract)
         ERC721("StayTransaction", "STAY")
         ERC2771Context(trustedForwarder_)
+        EIP712("StayPlatform", "0.0.1")
     {
         owner = _msgSender();
+        erc20ContractAddress = erc20Contract;
     }
 
     function _msgSender()
@@ -127,14 +137,34 @@ contract StayPlatform is ERC2771Context, ERC721 {
         address host,
         uint256 arbitrationDeadline,
         address arbiter,
-        uint256 tokenId,
         string memory _tokenURI,
         uint8 v,
         bytes32 r,
         bytes32 s
     ) public payable {
         require(host != _msgSender(), "host cannot be guest");
-        ERC20 usdc = ERC20(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48);
+        // Check signature usiing v, r, s.
+        bytes32 message = _hashTypedDataV4(
+            keccak256(
+                abi.encode(
+                    _TYPEHASH,
+                    startTime,
+                    endTime,
+                    price,
+                    _msgSender(),
+                    host,
+                    arbitrationDeadline,
+                    arbiter
+                )
+            )
+        );
+        address signer = ecrecover(message, v, r, s);
+        require(
+            signer == host,
+            "invalid signature. Make sure that host signed correctly."
+        );
+
+        ERC20 usdc = ERC20(erc20ContractAddress);
         bool transferSuccess = usdc.transferFrom(
             _msgSender(),
             address(this),
@@ -143,26 +173,9 @@ contract StayPlatform is ERC2771Context, ERC721 {
         require(transferSuccess, "transfer failed");
         _balances[host] += price;
 
-        // Check signature usiing v, r, s.
-        bytes32 message = keccak256(
-            abi.encodePacked(
-                address(this),
-                startTime,
-                endTime,
-                price,
-                _msgSender(),
-                host,
-                arbitrationDeadline,
-                arbiter,
-                tokenId,
-                _tokenURI
-            )
-        );
-        address signer = ecrecover(message, v, r, s);
-        require(
-            signer == host,
-            "invalid signature. Make sure that host signed correctly."
-        );
+        // Convert _tokenURI to a uint256 using hashing.
+        // This is to prevent the same _tokenURI from being used twice.
+        uint256 tokenId = uint256(keccak256(abi.encodePacked(_tokenURI)));
 
         stayTransactions[tokenId] = StayTransaction(
             startTime,
@@ -172,6 +185,7 @@ contract StayPlatform is ERC2771Context, ERC721 {
             host,
             arbitrationDeadline,
             arbiter,
+            _tokenURI,
             false,
             false
         );
