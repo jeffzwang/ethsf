@@ -6,6 +6,7 @@ import cors from '@koa/cors';
 import Router from '@koa/router';
 import { getListings } from '/src/routes/getListings';
 import { createListing } from '/src/routes/createListing';
+import { getReputations } from '/src/routes/getReputations';
 
 const main = async () => {
   const app = new Koa();
@@ -18,6 +19,7 @@ const main = async () => {
 
   router.post('/getListings', getListings);
   router.post('/createListing', createListing);
+  router.post('/getReputations', getReputations);
   app.use(router.routes());
 
   const port = 3001;
