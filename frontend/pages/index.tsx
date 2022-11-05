@@ -1,7 +1,6 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import ResultsPanel from '/components/ResultsPanel'
-import SearchPanel from '/components/SearchPanel'
+import Head from 'next/head';
+import ResultsPanel from '/components/ResultsPanel';
+import SearchPanel from '/components/SearchPanel';
 
 export default function Home() {
   return (
@@ -14,5 +13,5 @@ export default function Home() {
       <SearchPanel />
       <ResultsPanel />
     </div>
-  )
+  );
 }

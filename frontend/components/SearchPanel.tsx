@@ -1,9 +1,10 @@
-import { MapPinIcon, CalendarDaysIcon, HandThumbUpIcon } from '@heroicons/react/24/solid'
+import { MapPinIcon, CalendarDaysIcon, HandThumbUpIcon } from '@heroicons/react/24/solid';
 import ChunkyButton from '/components/ChunkyButton';
+import React from 'react';
 
 const SearchParameterBox = ({ children, Icon, title }: {
   children: React.ReactNode,
-  Icon: React.ComponentType<{ className: string }>,
+  Icon: React.ComponentType<{className: string}>,
   title: string;
 }) => {
   return (
@@ -21,7 +22,7 @@ const SearchParameterBox = ({ children, Icon, title }: {
       </div>
     </div>
   );
-}
+};
 
 const SearchPanel = () => {
   return (
@@ -51,6 +52,6 @@ const SearchPanel = () => {
       </div>
     </div>
   );
-}
+};
 
 export default SearchPanel;

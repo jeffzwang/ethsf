@@ -1,6 +1,5 @@
-import Image, { StaticImageData } from 'next/image';
-import couchPic from '../public/bluecouchphoto.jpg'
-
+import Image from 'next/image';
+import couchPic from '../public/bluecouchphoto.jpg';
 
 const ListingCard = () => {
   return (
@@ -33,7 +32,7 @@ const ListingCard = () => {
       </div>
     </div>
   );
-}
+};
 
 const ResultsPanel = () => {
   return (
@@ -41,6 +40,6 @@ const ResultsPanel = () => {
       <ListingCard />
     </div>
   );
-}
+};
 
 export default ResultsPanel;

@@ -26,7 +26,7 @@ const ChunkyButton = ({
        ${className}`}>
       {title}
     </button>
-  )
-}
+  );
+};
 
 export default ChunkyButton;
