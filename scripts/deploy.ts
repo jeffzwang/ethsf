@@ -22,6 +22,7 @@ async function main() {
   const stayPlatform = await StayPlatform.deploy('0xBadFBdE4824AB5A8f6F1fa8d38e0934b5697A8ad', usdc.address);
 
   await stayPlatform.deployed();
+  console.log(`Deployed StayPlatform to ${stayPlatform.address}`);
 
   // Create signature for a transaction.
   const hostWallet = new ethers.Wallet('0x701b615bbdfb9de65240bc28bd21bbc0d996645a3dd57e7b12bc2bdf6f192c82', provider);
@@ -48,9 +49,16 @@ async function main() {
   const { v, r, s } = ethers.utils.splitSignature(signature);
 
   // Do the transaction using the guest's address.
-  await stayPlatform.createStayTransaction(req.startTime, req.endTime, req.price, req.host, req.arbitrationDeadline, req.arbiter, req.tokenURI, v, r, s);
+  const res = await stayPlatform.createStayTransaction(req.startTime, req.endTime, req.price, req.host, req.arbitrationDeadline, req.arbiter, req.tokenURI, v, r, s);
 
-  console.log(`Deployed StayPlatform to ${stayPlatform.address}`);
+  // sleep 1 second.
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await res.wait();
+  // Get events from stayPlatform contract.
+  // take the sha3 hash of tokenURI.
+  const tokenURIHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(req.tokenURI));
+  console.log('tokenURIHash', tokenURIHash);
+  await stayPlatform.rateHost(true, tokenURIHash);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

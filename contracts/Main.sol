@@ -141,7 +141,7 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) public payable {
+    ) public payable returns (uint256 tokenId) {
         require(host != _msgSender(), "host cannot be guest");
         // Check signature usiing v, r, s.
         bytes32 message = _hashTypedDataV4(
@@ -175,7 +175,9 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
 
         // Convert _tokenURI to a uint256 using hashing.
         // This is to prevent the same _tokenURI from being used twice.
-        uint256 tokenId = uint256(keccak256(abi.encodePacked(_tokenURI)));
+        tokenId = uint256(keccak256(abi.encodePacked(_tokenURI)));
+        // Print the tokenID as a hex string.
+        console.log("tokenId: %s", tokenId.toHexString());
 
         stayTransactions[tokenId] = StayTransaction(
             startTime,
@@ -192,6 +194,7 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
 
         _safeMint(_msgSender(), tokenId);
         _setTokenURI(tokenId, _tokenURI);
+        return tokenId;
     }
 
     function withdrawHostFunds(uint256 tokenId) public {
