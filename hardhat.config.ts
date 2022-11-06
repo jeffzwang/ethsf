@@ -45,12 +45,12 @@ const config: HardhatUserConfig = {
       allowUnlimitedContractSize: true,
     },
     // use mumbai
-    mumbai: {
-      // Set url to alchemy mumbai.
-      url: 'https://polygon-mumbai.g.alchemy.com/v2/' + process.env.ALCHEMY_API_KEY!,
-      chainId: 80001,
-      accounts: [process.env.MUMBAI_PRIVATE_KEY!],
-    },
+    // mumbai: {
+    //   // Set url to alchemy mumbai.
+    //   url: 'https://polygon-mumbai.g.alchemy.com/v2/' + process.env.ALCHEMY_API_KEY!,
+    //   chainId: 80001,
+    //   accounts: [process.env.MUMBAI_PRIVATE_KEY!],
+    // },
   }
 };
 

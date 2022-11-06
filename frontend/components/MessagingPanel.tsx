@@ -3,7 +3,6 @@ import { useSigner, useAccount, useSignTypedData, usePrepareContractWrite, useCo
 import { BigNumber, ethers, Signer } from 'ethers';
 import { Conversation, DecodedMessage, Stream, Client, SendOptions } from '@xmtp/xmtp-js'
 import { getAddressForDisplay } from '/lib/getAddressForDisplay';
-import { writeStorage, useLocalStorage } from '@rehooks/local-storage';
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
 import { StayRequestCodec, StayRequestApprovalCodec, ContentTypeStayRequest, ContentTypeStayRequestApproval, } from '/lib/xmtpCodecs';
 import { StayRequest, StayRequestApproval } from '/lib/stayTypes';
@@ -13,35 +12,14 @@ import RedButton from '/components/RedButton';
 import { StayPlatformAbi, StayPlatformAddress } from '/deployments/StayPlatform';
 import { useStayTransactionStore } from '/lib/StayTransactionStore';
 import { useRouter } from 'next/router'
+import { createXmtpClient, decodeXmtpKey } from '/lib/createXmtpClient';
 
 let stream: Stream<DecodedMessage>
-
-const encode = (arr: Uint8Array): string => {
-  return Array.from(arr).map(x => String.fromCharCode(x)).join('');
-}
-
-const decode = (val: string): Uint8Array => {
-  return new Uint8Array(val.split('').map(x => x.charCodeAt(0)));
-}
-
-const createClient = async (signer: ethers.Signer, address: string, cachedPrivateKey: Uint8Array | undefined, callback: Function) => {
-  let keys: Uint8Array;
-  if (!cachedPrivateKey) {
-    keys = await Client.getKeys(signer);
-    writeStorage(`xmtpKey_${address}`, encode(keys));
-  } else {
-    keys = cachedPrivateKey;
-  }
-
-  const client = await Client.create(null, { privateKeyOverride: keys, codecs: [new StayRequestCodec(), new StayRequestApprovalCodec()] });
-  callback(client);
-}
 
 const useXmtpClient = () => {
   const { address: walletAddress } = useAccount();
   const { data: signer } = useSigner();
   const [client, setClient] = useState<Client | null>(null);
-  const [cachedPrivateKey] = useLocalStorage<string | undefined>(`xmtpKey_${walletAddress}`, undefined);
 
   useEffect(
     () => {
@@ -49,7 +27,7 @@ const useXmtpClient = () => {
         setClient(null);
         return;
       }
-      createClient(signer, walletAddress, cachedPrivateKey ? decode(cachedPrivateKey) : undefined, setClient);
+      createXmtpClient(signer, walletAddress, setClient);
     },
     [signer]);
 
@@ -59,7 +37,6 @@ const useXmtpClient = () => {
   }
 }
 
-
 const useXMTPConversation = (
   peerAddress: string,
   onMessageCallback?: Function
@@ -68,12 +45,6 @@ const useXMTPConversation = (
   const [convoMessages, setConvoMessages] = useState<DecodedMessage[]>([]);
   const [conversation, setConversation] = useState<Conversation | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [browserVisible, setBrowserVisible] = useState<boolean>(true)
-
-  // useEffect(() => {
-  //   window.addEventListener('focus', () => setBrowserVisible(true))
-  //   window.addEventListener('blur', () => setBrowserVisible(false))
-  // }, [])
 
   useEffect(() => {
     const getConvo = async () => {
@@ -82,8 +53,8 @@ const useXMTPConversation = (
       }
       setIsLoading(true);
       const convo = await client.conversations.newConversation(peerAddress);
-      // const prevConvoMessages = await convo.messages();
-      const prevConvoMessages: DecodedMessage[] = [];
+      const prevConvoMessages = await convo.messages();
+      // const prevConvoMessages: DecodedMessage[] = [];
       setConvoMessages(prevConvoMessages);
       setConversation(convo);
       setIsLoading(false);
@@ -229,9 +200,9 @@ const StayRequestMessage = ({ message, sendMessage }: { message: DecodedMessage,
               contentType: ContentTypeStayRequestApproval,
               contentFallback: 'useglider.xyz'
             });
-          }}
-          title="Accept"
-        />
+          }}>
+          Accept
+        </GreenButton>
         <RedButton
           title="Reject"
           onClick={() => {
@@ -256,6 +227,7 @@ const StayRequestApprovalMessage = ({ message }: { message: DecodedMessage, }) =
     approvalSignature,
   } = stayRequestApproval
 
+  const { address } = useAccount();
   const addStay = useStayTransactionStore(state => state.addStay);
   const router = useRouter();
 
@@ -269,6 +241,14 @@ const StayRequestApprovalMessage = ({ message }: { message: DecodedMessage, }) =
     args: [BigNumber.from(startTime), BigNumber.from(endTime), BigNumber.from(price), host, BigNumber.from(arbitrationDeadline), arbiter, tokenURI, v, r, s],
   });
   const { writeAsync } = useContractWrite(config);
+
+  if (!address || host === address) {
+    return (
+      <div className="">
+        You approved {getAddressForDisplay(guest)} to stay between {startTime} and {endTime} at your place.
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col rounded bg-lightSky bg-opacity-40 p-2 space-y-4">
@@ -285,9 +265,9 @@ const StayRequestApprovalMessage = ({ message }: { message: DecodedMessage, }) =
             router.push(`/booking/${transactionResponse.hash}`);
             // const res = await stayPlatform.createStayTransaction(startTime, endTime, price, host, arbitrationDeadline, arbiter, tokenURI, v, r, s);
 
-          }}
-          title="Finalize Booking"
-        />
+          }}>
+          Finalize Booking
+        </GreenButton>
       </div>
     </div >
   );
@@ -310,9 +290,13 @@ const StayTransactionEIP712Type = [
   { name: 'arbiter', type: 'address' },
 ];
 
-const MessagingPanel = () => {
-  const { address } = useAccount();
-  const { sendMessage, convoMessages, isLoading } = useXMTPConversation(address === '0xBBAaa0548C6F152b709451fD416fF23a771EcF8f' ? '0xc942c9a53012a24c466718f37B31Ed5251a06982' : '0xBBAaa0548C6F152b709451fD416fF23a771EcF8f')
+const MessagingPanel = ({
+  peerAddress
+}: {
+  peerAddress: string;
+}) => {
+  // const { address } = useAccount();
+  const { sendMessage, convoMessages, isLoading } = useXMTPConversation(peerAddress)
   const [didInitialScroll, setDidInitialScroll] = useState<boolean>(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -338,7 +322,7 @@ const MessagingPanel = () => {
             )
           } else if (message.contentType.sameAs(ContentTypeStayRequestApproval)) {
             return (
-              <StayRequestApprovalMessage message={message} sendMessage={sendMessage} key={message.id} />
+              <StayRequestApprovalMessage message={message} key={message.id} />
             )
           }
 
@@ -351,25 +335,6 @@ const MessagingPanel = () => {
         <div ref={messagesEndRef} />
       </div>
       <MessageInput sendMessage={sendMessage} />
-      <button onClick={
-        () => {
-          sendMessage({
-            startTime: '0x0',
-            endTime: '0x2',
-            price: '0x0',
-            guest: '0xBBAaa0548C6F152b709451fD416fF23a771EcF8f',
-            host: '0xc942c9a53012a24c466718f37B31Ed5251a06982',
-            arbitrationDeadline: '0x500',
-            arbiter: '0xc942c9a53012a24c466718f37B31Ed5251a06982',
-            tokenURI: 'useglider.xyz',
-          }, {
-            contentType: ContentTypeStayRequest,
-            contentFallback: 'useglider.xyz'
-          })
-        }
-      }>
-        Send Request
-      </button>
     </div>
 
   );
