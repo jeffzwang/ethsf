@@ -27,14 +27,7 @@ export const createListing = async (
     return;
   }
 
-  // Check to make sure fields are ok.
-  // if (bodyToPin.description == null || bodyToPin.pricePerNight == null || bodyToPin.images == null) {
-  //   ctx.status = 501;
-  //   ctx.message = 'Missing fields';
-  //   return;
-  // }
-
-  const pinataResp = await pinata.pinJSONToIPFS(bodyToPin, { pinataMetadata: { 'type': 'listing' } });
+  const pinataResp = await pinata.pinJSONToIPFS(bodyToPin, { pinataMetadata: { 'type': 'listing', 'name': 'testing' } });
 
   console.log('pinata pinned hash at ', pinataResp.IpfsHash);
 
