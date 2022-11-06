@@ -1,11 +1,7 @@
 import Image from 'next/image';
-import ResultsPanel from '/components/ResultsPanel';
-import SearchPanel from '/components/SearchPanel';
 import pfpPic from '../public/pfp.jpg';
 import couchPic from '../public/bluecouchphoto.jpg';
 import furnishedCouchPic from '../public/furnishedcouchphoto.jpeg';
-
-
 
 const HostProfileSection = () => {
   return (
@@ -33,7 +29,7 @@ const HostProfileSection = () => {
       </div>
     </div>
   );
-}
+};
 
 const ListingPanel = () => {
   return (
@@ -54,7 +50,7 @@ const ListingPanel = () => {
       </div>
     </div>
   );
-}
+};
 
 const BookPanel = () => {
   return (
@@ -62,7 +58,7 @@ const BookPanel = () => {
 
     </div>
   );
-}
+};
 
 export default function Listing() {
   return (

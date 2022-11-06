@@ -1,9 +1,14 @@
 import Image from 'next/image';
 import couchPic from '../public/bluecouchphoto.jpg';
 import pfpPic from '../public/pfp.jpg';
-import { MapPinIcon, CalendarDaysIcon, HandThumbUpIcon } from '@heroicons/react/24/solid';
+import { MapPinIcon, HandThumbUpIcon } from '@heroicons/react/24/solid';
+import { useSigner } from 'wagmi';
+import { ethers } from 'ethers';
+import { StayPlatformAbi } from '/deployments/StayPlatform';
 
 const ListingCard = () => {
+  const { data: signer } = useSigner();
+
   return (
     <div className="flex bg-white">
       <div className="w-[220px]">
@@ -67,14 +72,19 @@ const ListingCard = () => {
               20 min walk to the EthSF hackathon venue. Nice couch that also converts to a futon. I'm looking to make new frens in crypto, while supporting myself to make art
             </div>
           </div>
+          <button disabled={signer == null} onClick={async () => {
+            const contract = new ethers.Contract('0xD1501f923b5C6642482962fAd2cD4016Eb5ED2F7', StayPlatformAbi, signer!);
+            await contract.createStayTransaction(0, 1, 0, '0x0', 3, '0x0', 'some_ipfs', 111, '', '');
+          }}>
+            Book
+          </button>
           <div className="self-end text-2xl font-semibold">
             40 USDC
           </div>
         </div>
 
-
       </div>
-    </div>
+    </div >
   );
 };
 

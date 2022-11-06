@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
+
 import '@rainbow-me/rainbowkit/styles.css';
 import {
   getDefaultWallets,
@@ -18,7 +19,6 @@ import {
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import EventSelector from '/components/EventSelector';
-import ChunkyButton from '/components/ChunkyButton';
 import ConnectWalletButton from '/components/ConnectWalletButton';
 
 const queryClient = new QueryClient();
@@ -41,7 +41,7 @@ const wagmiClient = createClient({
   autoConnect: true,
   connectors,
   provider
-})
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -52,7 +52,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <div className="bg-gradient-to-b from-sky to-dusk py-4 px-12 flex flex-col h-full space-y-4">
             <div className="flex items-center justify-between">
               <div className="text-eggshell text-xl font-semibold font-serif">
-                Decentralized Couchsurfing
+                Decentralized Couchsurfing - Powered by Polygon
               </div>
               <div className="flex items-center text-sm font-semibold font-mono space-x-8 text-eggshell">
                 <button>

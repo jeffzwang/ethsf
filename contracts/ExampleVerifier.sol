@@ -1,23 +1,22 @@
-import "./StayPlatformVerifier.sol";
 import "./Main.sol";
 import "./polygoncontracts/validators/CredentialAtomicQuerySigValidator.sol";
 import "./polygoncontracts/verifiers/ZKPVerifier.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.15;
 
-contract ExampleVerifier is StayPlatformVerifier, ZKPVerifier {
-    address private ownerAddr;
+contract ExampleVerifier is ZKPVerifier, ERC721 {
+    uint256 counter = 0;
     uint64 public constant TRANSFER_REQUEST_ID = 1;
     // we wouldn't do this in production, but this makes it easier to do
     // hardhat testing
-    address private stayPlatformAddress;
+    StayPlatform private stayPlatform;
 
     // constructor that sets address owner.
-    constructor(address ownerAddress, address stayPlatformAddr) {
-        ownerAddr = ownerAddress;
-        stayPlatformAddress = stayPlatformAddr;
+    constructor(address stayPlatformAddr) ERC721("ExampleVerifier", "EXAMPLE") {
+        stayPlatform = StayPlatform(stayPlatformAddr);
     }
 
     function _beforeProofSubmit(
@@ -36,23 +35,12 @@ contract ExampleVerifier is StayPlatformVerifier, ZKPVerifier {
         );
     }
 
-    function verify(address guest) public view returns (address) {
-        // Use Polygon ID to check that the guest is male or female.
-        // CredentialAtomicQuerySigValidator validator = CredentialAtomicQuerySigValidator(
-        //         address(0x0)
-        //     );
-        require(proofs[guest][TRANSFER_REQUEST_ID], "No proof");
-
-        // Check that guest has more than half positive ratings if they do
-        // have ratings.
-        StayPlatform stayPlatform = StayPlatform(stayPlatformAddress);
-        bool goodRatings = stayPlatform.guestTotalRatings(guest) == 0 ||
-            (stayPlatform.guestNetRatings(guest) * 2 >
-                stayPlatform.guestTotalRatings(guest));
-        if (!goodRatings) {
-            return address(0);
-        }
-
-        return ownerAddr;
+    function _afterProofSubmit(
+        uint64,
+        uint256[] memory,
+        ICircuitValidator
+    ) internal override {
+        _safeMint(_msgSender(), counter);
+        counter += 1;
     }
 }

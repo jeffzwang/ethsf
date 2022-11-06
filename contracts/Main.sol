@@ -8,8 +8,6 @@ import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 // for console.log usage
 import "hardhat/console.sol";
 
-import "./StayPlatformVerifier.sol";
-
 contract StayPlatform is ERC2771Context, ERC721, EIP712 {
     using Strings for uint256;
 
@@ -48,6 +46,8 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
     mapping(address => uint256) public hostTotalRatings;
     mapping(address => uint256) public guestNetRatings;
     mapping(address => uint256) public guestTotalRatings;
+
+    mapping(address => address) private verifierAddrToHostAddr;
 
     // Base URI
     string private _baseURIextended;
@@ -142,12 +142,15 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
         string memory _tokenURI,
         address verifierAddress
     ) public payable returns (uint256 tokenId) {
-        require(host != _msgSender(), "host cannot be guest");
-        StayPlatformVerifier verifier = StayPlatformVerifier(verifierAddress);
+        // Make sure the verifier was registered.
+        require(startTime < endTime, "startTime must be before endTime");
         require(
-            verifier.verify(_msgSender()) != address(0),
-            "guest does not pass verification"
+            verifierAddrToHostAddr[verifierAddress] == host,
+            "verifierAddress is not registered to host"
         );
+
+        ERC721 verifierAsNFT = ERC721(verifierAddress);
+        require(verifierAsNFT.balanceOf(_msgSender()) > 0);
 
         ERC20 usdc = ERC20(erc20ContractAddress);
         bool transferSuccess = usdc.transferFrom(
@@ -194,6 +197,7 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
         bytes32 r,
         bytes32 s
     ) public payable returns (uint256 tokenId) {
+        require(startTime < endTime, "startTime must be before endTime");
         require(host != _msgSender(), "host cannot be guest");
         // Check signature usiing v, r, s.
         bytes32 message = _hashTypedDataV4(
@@ -324,5 +328,10 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
             guestNetRatings[transaction.guest] -= 1;
         }
         stayTransactions[tokenID].guestWasRated = true;
+    }
+
+    function addVerifier(address verifierAddress) public {
+        // This way, we guarantee that the host gave permission.
+        verifierAddrToHostAddr[verifierAddress] = _msgSender();
     }
 }

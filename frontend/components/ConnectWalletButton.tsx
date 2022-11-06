@@ -1,7 +1,5 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
-import Image from 'next/image';
-
 
 export const ConnectWalletButton = () => {
   return (

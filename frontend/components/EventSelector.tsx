@@ -38,7 +38,7 @@ const EventItem = ({
       </div>
     </button>
   );
-}
+};
 
 const EventSelector = () => {
   return (
@@ -49,15 +49,15 @@ const EventSelector = () => {
         <div className="w-full h-[1px] bg-eggshell">
         </div>
         <div className="-mt-[7px] self-center flex space-x-6">
-          <EventItem isSelected image={ethsanfranciscologo} onClick={() => { }} dateText="Nov 4-6, 2022" locationText="San Francisco, CA" />
-          <EventItem image={ethindialogo} onClick={() => { }} dateText="Dec 2-4, 2022" locationText="Bengaluru, India" />
-          <EventItem image={ethdenverlogo} onClick={() => { }} dateText="Feb 24 - Mar 5, 2022" locationText="Denver, CO" />
-          <EventItem image={nftnyclogo} onClick={() => { }} dateText="Apr 12-14, 2022" locationText="New York City, NY" />
+          <EventItem isSelected image={ethsanfranciscologo} onClick={() => {}} dateText="Nov 4-6, 2022" locationText="San Francisco, CA" />
+          <EventItem image={ethindialogo} onClick={() => {}} dateText="Dec 2-4, 2022" locationText="Bengaluru, India" />
+          <EventItem image={ethdenverlogo} onClick={() => {}} dateText="Feb 24 - Mar 5, 2022" locationText="Denver, CO" />
+          <EventItem image={nftnyclogo} onClick={() => {}} dateText="Apr 12-14, 2022" locationText="New York City, NY" />
         </div>
       </div>
 
     </div>
   );
-}
+};
 
 export default EventSelector;
