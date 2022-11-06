@@ -223,10 +223,17 @@ const listingInfo2: ListingInfo = {
 };
 
 const ResultsPanel = () => {
+  const listingInfoArr = [listingInfo1, listingInfo2];
   return (
     <div className="bg-lightSky space-y-2 p-2 rounded-md">
-      <ListingCard listingInfo={listingInfo1} />
-      <ListingCard listingInfo={listingInfo2} />
+      {listingInfoArr.map((listingInfo, index) => {
+        return (
+          <ListingCard
+            key={index}
+            listingInfo={listingInfo}
+          />
+        );
+      })}
     </div>
   );
 };

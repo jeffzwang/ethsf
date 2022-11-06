@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import MessagingPanel from '/components/MessagingPanel';
 
 const messaging = () => {
@@ -11,6 +11,6 @@ const messaging = () => {
   return (
     <MessagingPanel peerAddress={peerAddress as string} />
   );
-}
+};
 
 export default messaging;

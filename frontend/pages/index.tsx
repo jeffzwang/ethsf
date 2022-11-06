@@ -3,6 +3,7 @@ import ResultsPanel from '/components/ResultsPanel';
 import { MapPinIcon, CalendarDaysIcon, HandThumbUpIcon } from '@heroicons/react/24/solid';
 import ChunkyButton from '/components/ChunkyButton';
 import React from 'react';
+import { SpinningLoaderPage } from '/components/Loader';
 
 const SearchParameterBox = ({ children, Icon, title }: {
   children: React.ReactNode,
@@ -68,11 +69,3 @@ export default function Home() {
     </div>
   );
 }
-
-const SpinningLoaderPage = () => {
-  return (
-    <div className="flex-1 flex justify-center items-center">
-      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" />
-    </div>
-  );
-};
