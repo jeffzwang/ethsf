@@ -277,7 +277,7 @@ const StayTransactionEIP712Domain = {
   name: 'StayPlatform',
   version: '0.0.1',
   chainId: 80001,
-  verifyingContract: '0x075e16213cc0e2EdF1AED1dEaea54F2A347cA8e0',
+  verifyingContract: StayPlatformAddress,
 };
 
 const StayTransactionEIP712Type = [

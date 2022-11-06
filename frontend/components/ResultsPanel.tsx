@@ -47,8 +47,18 @@ export type ListingInfo = {
   hostPic: StaticImageData;
 }
 
+const defaultStayRequest = {
+  startTime: ethers.utils.hexlify(1667748072),
+  endTime: ethers.utils.hexlify(1668007272),
+  price: '0x0',
+  host: '0xc942c9a53012a24c466718f37B31Ed5251a06982',
+  arbitrationDeadline: ethers.utils.hexlify(1668093672),
+  arbiter: '0x0000000000000000000000000000000000000000',
+  tokenURI: 'QmNjjbQqpeRiV3MLSpHmVWaxVnP1b1buAFuJec7r2xNmYW',
+};
+
 // pass ListingInfo in as props.
-const ListingCard = ({ listingInfo }: {listingInfo: ListingInfo}) => {
+const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const router = useRouter();
@@ -131,7 +141,7 @@ const ListingCard = ({ listingInfo }: {listingInfo: ListingInfo}) => {
             className="opacity-80 bg-gray-400 shadow-none items-center flex space-x-2 justify-center text-sm"
             onClick={async () => {
               const contract = new ethers.Contract(StayPlatformAddress, StayPlatformAbi, signer!);
-              await contract.createStayTransaction(0, 1, 0, '0x0', 3, '0x0', 'some_ipfs', 111, '', '');
+              await contract.createStayTransactionWithoutAuth(defaultStayRequest.startTime, defaultStayRequest.endTime, 0x0, defaultStayRequest.host, defaultStayRequest.arbitrationDeadline, defaultStayRequest.arbiter, defaultStayRequest.tokenURI, VerifierNFTAddress);
             }}>
             <BoltIcon className="h-4 w-4" />
             <div>
