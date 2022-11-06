@@ -635,7 +635,7 @@ const StayPlatformAbi = [
   }
 ] as const;
 
-const StayPlatformAddress = '0x075e16213cc0e2EdF1AED1dEaea54F2A347cA8e0';
+const StayPlatformAddress = '0x2dAbd9E895Eb65d767b70cadD1ead548F63377b6';
 
 export {
   StayPlatformAbi,

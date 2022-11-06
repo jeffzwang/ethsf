@@ -46,16 +46,22 @@ export default function App({ Component, pageProps }: AppProps) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <QueryClientProvider client={queryClient}>
-
           <div className="bg-gradient-to-b from-sky to-dusk py-4 px-12 flex flex-col h-full space-y-4">
             <div className="flex items-center justify-between">
-              <div className="text-eggshell text-xl font-semibold font-serif">
-                Decentralized Couchsurfing - Powered by Polygon
-              </div>
+              <a href="/">
+                <div className="text-eggshell text-xl font-semibold font-serif">
+                  Decentralized Couchsurfing - powered by Polygon
+                </div>
+              </a>
               <div className="flex items-center text-sm font-semibold font-mono space-x-8 text-eggshell">
                 <button>
                   Host a fren
                 </button>
+                <a href="/trust">
+                  <button>
+                    Export your trust
+                  </button>
+                </a>
                 <div>
                   <ConnectWalletButton />
                 </div>
