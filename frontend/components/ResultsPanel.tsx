@@ -20,7 +20,6 @@ import pfpPic3 from '../public/spiral.avif';
 import pfpPic4 from '../public/azuki.png';
 import { useStayTransactionStore } from '/lib/StayTransactionStore';
 import { useEffect, useState } from 'react';
-import { randomUUID } from 'crypto';
 
 const useIsEligibleForInstantBook = () => {
   const { address } = useAccount();
@@ -209,7 +208,7 @@ const ListingCard = ({ listingInfo }: {listingInfo: ListingInfo}) => {
                 host: '0xc942c9a53012a24c466718f37B31Ed5251a06982',
                 arbitrationDeadline: ethers.utils.hexlify(1668093672),
                 arbiter: '0x0000000000000000000000000000000000000000',
-                tokenURI: 'QmNjjbQqpeRiV3MLSpHmVWaxVnP1b1buAFuJec7r2xNmYW' + randomUUID(),
+                tokenURI: 'QmNjjbQqpeRiV3MLSpHmVWaxVnP1b1buAFuJec7r2xNmYW' + generateRandomString(),
               };
               //@ts-ignore
               await sendRequestToBook(signer!, stayRequest);
