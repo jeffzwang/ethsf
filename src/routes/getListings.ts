@@ -8,7 +8,8 @@ const pinata = new pinataSDK(process.env.PINATA_API_KEY!, process.env.PINATA_API
 export const getListings = async (
   ctx: Context,
 ) => {
-  const pinataResp = await pinata.pinList({ metadata: { keyvalues: { 'type': { value: 'listing', op: 'eq' } } } });
+  const pinataResp = await pinata.pinList({ metadata: { name: 'testing', keyvalues: {} } });
+  console.log('pinataResp', pinataResp);
   // Go through and make sure that we are looking at JSON that is structured 
   // like we want.
   // Asynchronous go through pinataResp.rows
@@ -18,10 +19,8 @@ export const getListings = async (
       const hash = row.ipfs_pin_hash;
       const resp = await axios.get('https://gateway.pinata.cloud/ipfs/' + hash);
       const data = resp.data;
-      if (!(data.description == null || data.pricePerNight == null || data.images == null)) {
-        // Return listing.
-        listings.push(data);
-      }
+      console.log('data', data);
+      listings = data;
     }));
   ctx.status = 200;
   ctx.body = {

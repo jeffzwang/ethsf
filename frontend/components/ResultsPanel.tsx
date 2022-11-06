@@ -223,6 +223,7 @@ const listingInfo2: ListingInfo = {
 };
 
 const ResultsPanel = () => {
+  // TODO: when polygon ID on mainnet, fetch listings from IPFS.
   const listingInfoArr = [listingInfo1, listingInfo2];
   return (
     <div className="bg-lightSky space-y-2 p-2 rounded-md">
