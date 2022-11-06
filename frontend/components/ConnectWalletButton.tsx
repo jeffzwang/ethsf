@@ -59,7 +59,7 @@ export const ConnectWalletButton = () => {
               if (chain.unsupported) {
                 return (
                   <button onClick={openChainModal} type="button">
-                    Wrong network (Only Ethereum and Polygon are supported)
+                    Wrong network (Only Ethereum and Polygon are supported). Make sure the network is added to your Metamask.
                   </button>
                 );
               }
