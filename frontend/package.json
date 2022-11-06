@@ -10,11 +10,8 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.13",
-<<<<<<< HEAD
     "@rainbow-me/rainbowkit": "^0.7.4",
     "@rehooks/local-storage": "^2.4.4",
-=======
->>>>>>> 951e739c64f730ad2b7049f69e8acdefb2d5b597
     "@types/node": "18.11.9",
     "@types/react-dom": "18.0.8",
     "@xmtp/xmtp-js": "^7.0.1",
