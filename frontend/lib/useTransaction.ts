@@ -18,7 +18,6 @@ const mumbaiChainParams = {
 const fetchTransaction = async (chainId: number, transactionHash: string) => {
   const provider = new ethers.providers.AlchemyProvider(chainId, process.env.NEXT_PUBLIC_ALCHEMY_ID);
 
-  console.log(provider)
   const [transaction, blockNumber] = await Promise.all([
     provider.getTransaction(transactionHash),
     provider.getBlockNumber(),

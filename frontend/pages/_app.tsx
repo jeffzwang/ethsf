@@ -50,7 +50,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <div className="flex items-center justify-between">
               <a href="/">
                 <div className="text-eggshell text-xl font-semibold font-serif">
-                  Decentralized Couchsurfing - powered by Polygon
+                  Decentralized Couchsurfing
                 </div>
               </a>
               <div className="flex items-center text-sm font-semibold font-mono space-x-8 text-eggshell">

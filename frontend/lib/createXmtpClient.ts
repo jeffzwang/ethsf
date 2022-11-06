@@ -13,10 +13,10 @@ const decodeXmtpKey = (val: string): Uint8Array => {
 }
 
 const createXmtpClient = async (signer: ethers.Signer, address: string, callback: Function) => {
-
   const cachedPrivateKey = window.localStorage.getItem(`xmtpKey_${address}`);
   let keys: Uint8Array;
   if (!cachedPrivateKey) {
+    console.log('no cache!')
     keys = await Client.getKeys(signer);
     writeStorage(`xmtpKey_${address}`, encodeXmtpKey(keys));
   } else {

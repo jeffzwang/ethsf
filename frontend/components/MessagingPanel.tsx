@@ -13,6 +13,7 @@ import { StayPlatformAbi, StayPlatformAddress } from '/deployments/StayPlatform'
 import { useStayTransactionStore } from '/lib/StayTransactionStore';
 import { useRouter } from 'next/router'
 import { createXmtpClient, decodeXmtpKey } from '/lib/createXmtpClient';
+import { SpinningLoaderPage } from '/components/Loader';
 
 let stream: Stream<DecodedMessage>
 
@@ -309,7 +310,7 @@ const MessagingPanel = ({
   useEffect(scrollToBottom, [convoMessages]);
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <SpinningLoaderPage />
   }
   return (
     <div className="flex flex-col bg-eggshell p-2 rounded">
