@@ -1,15 +1,19 @@
-import Image from 'next/image';
-import couchPic from '../public/bluecouchphoto.jpg';
-import pfpPic from '../public/pfp.jpg';
-import { MapPinIcon, HandThumbUpIcon, BoltIcon } from '@heroicons/react/24/solid';
-import { useSigner, useContractRead, useAccount } from 'wagmi';
-import { ethers } from 'ethers';
+import { BoltIcon, HandThumbUpIcon, MapPinIcon } from '@heroicons/react/24/solid';
+import Image, { StaticImageData } from 'next/image';
 import { StayPlatformAbi, StayPlatformAddress } from '/deployments/StayPlatform';
 import { VerifierNFTAbi, VerifierNFTAddress } from '/deployments/VerifierNFT';
-import { sendRequestToBook } from '/lib/sendRequestToBook';
-import { useRouter } from 'next/router';
+import { useAccount, useContractRead, useSigner } from 'wagmi';
+
 import GreenButton from '/components/GreenButton';
 import USDCIcon from '/icons/USDCIcon';
+import { ethers } from 'ethers';
+import { sendRequestToBook } from '/lib/sendRequestToBook';
+import { useRouter } from 'next/router';
+
+import couchPic2 from '../public/couchpic2.png';
+import couchPic from '../public/bluecouchphoto.jpg';
+import pfpPic2 from '../public/pfp2.avif';
+import pfpPic from '../public/pfp.jpg';
 
 const useIsEligibleForInstantBook = () => {
   const { address } = useAccount();
@@ -39,6 +43,8 @@ export type ListingInfo = {
   accommodationDescription: string;
   neighborhoodDescription: string;
   pricePerNight: string;
+  listingPic: StaticImageData;
+  hostPic: StaticImageData;
 }
 
 // pass ListingInfo in as props.
@@ -46,17 +52,17 @@ const ListingCard = ({ listingInfo }: {listingInfo: ListingInfo}) => {
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const router = useRouter();
-  const { ensName, referencesNumber, vouchesNumber, personalDescription, ipfsHash, voucherName, neighborhoodName, accommodationDescription, neighborhoodDescription, pricePerNight } = listingInfo;
+  const { ensName, referencesNumber, vouchesNumber, personalDescription, voucherName, neighborhoodName, accommodationDescription, neighborhoodDescription, pricePerNight, listingPic, hostPic } = listingInfo;
 
   return (
     <div className="flex bg-white">
-      <div className="w-[220px]">
-        <Image src={couchPic} alt="picture of listing" />
+      <div className="w-[220px] relative">
+        <Image src={listingPic} alt="picture of listing" fill />
       </div>
       <div className="flex-1 flex flex-col">
         <div className="flex">
-          <div className="w-[96px] h-[96px]">
-            <Image src={pfpPic} alt="picture of host" />
+          <div className="w-[96px] h-[96px] relative">
+            <Image src={hostPic} alt="picture of host" fill />
           </div>
           <div className="flex-1 flex flex-col p-1 pl-4">
             <div className="text-2xl font-semibold py-2 font-mono">
@@ -122,7 +128,7 @@ const ListingCard = ({ listingInfo }: {listingInfo: ListingInfo}) => {
         </div>
         <div className="flex flex-col space-y-2">
           <GreenButton
-            className="opacity-80 bg-gray-400 shadow-none items-center flex space-x-2 justify-center"
+            className="opacity-80 bg-gray-400 shadow-none items-center flex space-x-2 justify-center text-sm"
             onClick={async () => {
               const contract = new ethers.Contract(StayPlatformAddress, StayPlatformAbi, signer!);
               await contract.createStayTransaction(0, 1, 0, '0x0', 3, '0x0', 'some_ipfs', 111, '', '');
@@ -133,6 +139,7 @@ const ListingCard = ({ listingInfo }: {listingInfo: ListingInfo}) => {
             </div>
           </GreenButton>
           <GreenButton
+            className="text-sm"
             onClick={async () => {
               if (!signer || !address) {
                 return;
@@ -172,6 +179,8 @@ const listingInfo1: ListingInfo = {
   accommodationDescription: 'Couch in the living room',
   neighborhoodDescription: '20 min walk to the EthSF hackathon venue. Nice couch that also converts to a futon. I\'m looking to make new frens in crypto, while supporting myself to make art',
   pricePerNight: '40',
+  listingPic: couchPic,
+  hostPic: pfpPic,
 };
 
 const listingInfo2: ListingInfo = {
@@ -186,6 +195,8 @@ const listingInfo2: ListingInfo = {
   accommodationDescription: 'Sofa bed in upstairs corner',
   neighborhoodDescription: 'Vibrant part of the Mission. Near the 16th St. BART station.',
   pricePerNight: '30',
+  listingPic: couchPic2,
+  hostPic: pfpPic2,
 };
 
 const ResultsPanel = () => {

@@ -8,6 +8,9 @@ const sendRequestToBook = async (signer: ethers.Signer, stay: StayRequest) => {
     host
   } = stay;
   const address = await signer.getAddress();
+  if (address === host) {
+    return;
+  }
   const client = await createXmtpClient(signer, address, () => { })
   const convo = await client.conversations.newConversation(host);
   return await convo.send(stay, {
