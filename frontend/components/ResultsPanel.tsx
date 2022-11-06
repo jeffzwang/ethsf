@@ -6,9 +6,8 @@ import { useSigner, useContractRead, useAccount } from 'wagmi';
 import { ethers } from 'ethers';
 import { StayPlatformAbi, StayPlatformAddress } from '/deployments/StayPlatform';
 import { VerifierNFTAbi, VerifierNFTAddress } from '/deployments/VerifierNFT';
-import { useEffect, useState } from 'react';
 import { sendRequestToBook } from '/lib/sendRequestToBook';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import GreenButton from '/components/GreenButton';
 import USDCIcon from '/icons/USDCIcon';
 
@@ -20,18 +19,34 @@ const useIsEligibleForInstantBook = () => {
     address: VerifierNFTAddress,
     functionName: 'balanceOf',
     args: [address || '0x0'],
-  })
+  });
 
   if (balance && balance.gt(0)) {
     return true;
   }
   return false;
+};
+
+export type ListingInfo = {
+  hostAddress: string;
+  ensName: string;
+  referencesNumber: number;
+  vouchesNumber: number;
+  personalDescription: string;
+  ipfsHash: string;
+  voucherName: string;
+  neighborhoodName: string;
+  accommodationDescription: string;
+  neighborhoodDescription: string;
+  pricePerNight: string;
 }
 
-const ListingCard = () => {
+// pass ListingInfo in as props.
+const ListingCard = ({ listingInfo }: {listingInfo: ListingInfo}) => {
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const router = useRouter();
+  const { ensName, referencesNumber, vouchesNumber, personalDescription, ipfsHash, voucherName, neighborhoodName, accommodationDescription, neighborhoodDescription, pricePerNight } = listingInfo;
 
   return (
     <div className="flex bg-white">
@@ -45,7 +60,7 @@ const ListingCard = () => {
           </div>
           <div className="flex-1 flex flex-col p-1 pl-4">
             <div className="text-2xl font-semibold py-2 font-mono">
-              Ashley.eth
+              {ensName}
             </div>
             <div className="flex space-x-8">
               <div className="flex space-x-2">
@@ -53,7 +68,7 @@ const ListingCard = () => {
                   References
                 </div>
                 <div className="font-semibold">
-                  21
+                  {referencesNumber}
                 </div>
               </div>
               <div className="flex space-x-2">
@@ -61,12 +76,12 @@ const ListingCard = () => {
                   Vouched by
                 </div>
                 <div className="font-semibold">
-                  7
+                  {vouchesNumber}
                 </div>
               </div>
             </div>
             <div className="text-gray-500 text-sm">
-              ex-MetaMask, into techno, volunteer at EthSF
+              {personalDescription}
             </div>
           </div>
         </div>
@@ -75,14 +90,14 @@ const ListingCard = () => {
             <div className="flex space-x-3">
               <MapPinIcon className="h-5 w-5" />
               <div className="font-semibold">
-                Marina District, SF
+                {neighborhoodName}
               </div>
             </div>
             <div>
-              Couch in the living room
+              {neighborhoodDescription}
             </div>
             <div className="text-sm">
-              20 min walk to the EthSF hackathon venue. Nice couch that also converts to a futon. I'm looking to make new frens in crypto, while supporting myself to make art
+              {accommodationDescription}
             </div>
           </div>
         </div>
@@ -95,15 +110,14 @@ const ListingCard = () => {
               Vouched by
             </div>
             <div className="font-semibold">
-              Wadeful.eth
+              {voucherName}
             </div>
           </div>
         </div>
         <div className="self-end flex-1 flex items-center text-2xl font-semibold space-x-2">
           <USDCIcon className="w-6 h-6" color="" />
           <div>
-            40 USDC
-
+            {pricePerNight}
           </div>
         </div>
         <div className="flex flex-col space-y-2">
@@ -146,11 +160,39 @@ const ListingCard = () => {
   );
 };
 
+const listingInfo1: ListingInfo = {
+  hostAddress: '0xc942c9a53012a24c466718f37B31Ed5251a06982',
+  ensName: 'ashley.eth',
+  referencesNumber: 21,
+  vouchesNumber: 7,
+  personalDescription: 'ex-MetaMask, into techno, volunteer at EthSF',
+  ipfsHash: 'QmNjjbQqpeRiV3MLSpHmVWaxVnP1b1buAFuJec7r2xNmYW',
+  voucherName: 'Wadeful.eth',
+  neighborhoodName: 'Marina District, SF',
+  accommodationDescription: 'Couch in the living room',
+  neighborhoodDescription: '20 min walk to the EthSF hackathon venue. Nice couch that also converts to a futon. I\'m looking to make new frens in crypto, while supporting myself to make art',
+  pricePerNight: '40',
+};
+
+const listingInfo2: ListingInfo = {
+  hostAddress: '0xc942c9a53012a24c466718f37B31Ed5251a06123',
+  ensName: 'billy.eth',
+  referencesNumber: 15,
+  vouchesNumber: 3,
+  personalDescription: 'Full time web2, part time web3',
+  ipfsHash: 'QmNjjbQqpeRiV3MLSpHmVWaxVnP1b1buAFuJec7r2xNmYW',
+  voucherName: 'vitalik.eth',
+  neighborhoodName: 'Mission District, SF',
+  accommodationDescription: 'Sofa bed in upstairs corner',
+  neighborhoodDescription: 'Vibrant part of the Mission. Near the 16th St. BART station.',
+  pricePerNight: '30',
+};
+
 const ResultsPanel = () => {
   return (
     <div className="bg-lightSky space-y-2 p-2 rounded-md">
-      <ListingCard />
-      <ListingCard />
+      <ListingCard listingInfo={listingInfo1} />
+      <ListingCard listingInfo={listingInfo2} />
     </div>
   );
 };
