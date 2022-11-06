@@ -10,10 +10,14 @@ import { ethers } from 'ethers';
 import { sendRequestToBook } from '/lib/sendRequestToBook';
 import { useRouter } from 'next/router';
 
+import couchPic4 from '../public/basement.jpeg';
+import couchPic3 from '../public/couchpic3.png';
 import couchPic2 from '../public/couchpic2.png';
 import couchPic from '../public/bluecouchphoto.jpg';
 import pfpPic2 from '../public/pfp2.avif';
 import pfpPic from '../public/pfp.jpg';
+import pfpPic3 from '../public/spiral.avif';
+import pfpPic4 from '../public/azuki.png';
 import { useStayTransactionStore } from '/lib/StayTransactionStore';
 import { useEffect, useState } from 'react';
 import { randomUUID } from 'crypto';
@@ -24,8 +28,7 @@ const useIsEligibleForInstantBook = () => {
   const [scoped, setScoped] = useState(false);
   useEffect(() => {
     setScoped(true);
-  })
-
+  });
 
   const { data: balance, isError, isLoading } = useContractRead({
     abi: VerifierNFTAbi,
@@ -63,8 +66,8 @@ export type ListingInfo = {
 
 // A ES5 function that automatically generates a random string of length 10 without using randomUUID.
 function generateRandomString() {
-  let text = "";
-  const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (let i = 0; i < 10; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
@@ -82,7 +85,7 @@ const defaultStayRequest = {
 };
 
 // pass ListingInfo in as props.
-const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
+const ListingCard = ({ listingInfo }: {listingInfo: ListingInfo}) => {
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const router = useRouter();
@@ -257,9 +260,45 @@ const listingInfo2: ListingInfo = {
   hostPic: pfpPic2,
 };
 
+const listingInfo3: ListingInfo = {
+  hostAddress: '0xdd4ffD5B749cB86B20c70AD51e22FfA4Da6246bC',
+  ensName: 'samkim.eth',
+  referencesNumber: 20,
+  vouchesNumber: 1,
+  personalDescription: 'ETH maxi. I like to code and play with my dog. GPT-3 said this.',
+  // fake
+  ipfsHash: 'QmYcYP5XzgAMD1SnNavEgbu4iSoptBGVuMwNzcVnYGNt8z',
+  voucherName: 'none',
+  neighborhoodName: 'Lower Haight, SF',
+  accommodationDescription: 'Spare room',
+  neighborhoodDescription: 'Live near the Centre and Alamo Square Park! Friends mostly work at startups.',
+  pricePerNight: 25,
+  lensFollowers: 4,
+  listingPic: couchPic3,
+  hostPic: pfpPic3,
+};
+
+const listingInfo4: ListingInfo = {
+  hostAddress: '0x74D8a2472067e506453f0e3395A59BBA7d865f2D',
+  ensName: 'jeffzwang.eth',
+  referencesNumber: 0,
+  vouchesNumber: 0,
+  personalDescription: 'Who likes it when I say "I\'m a web3 developer"? Svelte and Ethers.js!',
+  // fake
+  ipfsHash: 'QmYcYP5XzgAMD1SnNavEgbu4iSoptBGVuMwNzcVnYGNt8z',
+  voucherName: 'none',
+  neighborhoodName: 'Sunset District, SF',
+  accommodationDescription: 'Basement - promise it is not that bad!',
+  neighborhoodDescription: 'Work at a Chinese restaurant - happy to cook for you!',
+  pricePerNight: 15,
+  lensFollowers: 2,
+  listingPic: couchPic4,
+  hostPic: pfpPic4,
+};
+
 const ResultsPanel = () => {
   // TODO: when polygon ID on mainnet, fetch listings from IPFS.
-  const listingInfoArr = [listingInfo1, listingInfo2];
+  const listingInfoArr = [listingInfo1, listingInfo2, listingInfo3, listingInfo4];
   return (
     <div className="bg-lightSky space-y-2 p-2 rounded-md">
       {listingInfoArr.map((listingInfo, index) => {
