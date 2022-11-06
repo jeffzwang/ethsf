@@ -42,7 +42,8 @@ export type ListingInfo = {
   neighborhoodName: string;
   accommodationDescription: string;
   neighborhoodDescription: string;
-  pricePerNight: string;
+  pricePerNight: number;
+  lensFollowers: number;
   listingPic: StaticImageData;
   hostPic: StaticImageData;
 }
@@ -58,11 +59,11 @@ const defaultStayRequest = {
 };
 
 // pass ListingInfo in as props.
-const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
+const ListingCard = ({ listingInfo }: {listingInfo: ListingInfo}) => {
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const router = useRouter();
-  const { ensName, referencesNumber, vouchesNumber, personalDescription, voucherName, neighborhoodName, accommodationDescription, neighborhoodDescription, pricePerNight, listingPic, hostPic } = listingInfo;
+  const { ensName, referencesNumber, vouchesNumber, personalDescription, voucherName, neighborhoodName, accommodationDescription, neighborhoodDescription, pricePerNight, listingPic, hostPic, lensFollowers } = listingInfo;
 
   return (
     <div className="flex bg-white">
@@ -93,6 +94,14 @@ const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
                 </div>
                 <div className="font-semibold">
                   {vouchesNumber}
+                </div>
+              </div>
+              <div className="flex space-x-2">
+                <div className="font">
+                  Lens Followers
+                </div>
+                <div className="font-semibold">
+                  {lensFollowers}
                 </div>
               </div>
             </div>
@@ -133,7 +142,7 @@ const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
         <div className="self-end flex-1 flex items-center text-2xl font-semibold space-x-2">
           <USDCIcon className="w-6 h-6" color="" />
           <div>
-            {pricePerNight}
+            {pricePerNight.toString()}
           </div>
         </div>
         <div className="flex flex-col space-y-2">
@@ -189,7 +198,8 @@ const listingInfo1: ListingInfo = {
   neighborhoodName: 'Marina District, SF',
   accommodationDescription: 'Couch in the living room',
   neighborhoodDescription: '20 min walk to the EthSF hackathon venue. Nice couch that also converts to a futon. I\'m looking to make new frens in crypto, while supporting myself to make art',
-  pricePerNight: '40',
+  pricePerNight: 40,
+  lensFollowers: 19,
   listingPic: couchPic,
   hostPic: pfpPic,
 };
@@ -206,7 +216,8 @@ const listingInfo2: ListingInfo = {
   neighborhoodName: 'Mission District, SF',
   accommodationDescription: 'Sofa bed in upstairs corner',
   neighborhoodDescription: 'Vibrant part of the Mission. Near the 16th St. BART station.',
-  pricePerNight: '30',
+  pricePerNight: 30,
+  lensFollowers: 0,
   listingPic: couchPic2,
   hostPic: pfpPic2,
 };
