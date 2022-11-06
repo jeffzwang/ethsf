@@ -176,7 +176,6 @@ const StayRequestMessage = ({ message, sendMessage }: { message: DecodedMessage,
     return null;
   }
 
-  console.log(address, message)
   if (address === stayRequest.guest) {
     return (
       <div className="">

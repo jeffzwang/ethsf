@@ -7,7 +7,7 @@ async function main() {
   const validatorAddress = '0xb1e86C4c687B85520eF4fd2a0d14e81970a15aFB';
 
   // Grab the schema hash from Polygon ID Platform
-  const schemaHash = '86c3ae3b5f9ce5547cb90a74c84d020b';
+  const schemaHash = 'b73fd87a9873429798f1cafa475ac504';
 
   const schemaEnd = fromLittleEndian(hexToBytes(schemaHash));
 
@@ -21,7 +21,7 @@ async function main() {
   };
 
   // add the address of the contract just deployed
-  const ExampleVerifierAddress = '0xD1BfD5d41b50Ff0d072a5552665F08f32a2cCf37';
+  const ExampleVerifierAddress = '0xC9dcE5C93249071CdbBDFF8bFc6539a802670b27';
 
   let exampleVerifier = await ethers.getContractAt('ExampleVerifier', ExampleVerifierAddress);
 

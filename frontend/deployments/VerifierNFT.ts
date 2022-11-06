@@ -652,7 +652,6 @@ const VerifierNFTAbi = [
 ] as const;
 
 const VerifierNFTAddress = '0xD1BfD5d41b50Ff0d072a5552665F08f32a2cCf37';
-
 export {
   VerifierNFTAbi,
   VerifierNFTAddress,

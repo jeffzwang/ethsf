@@ -14,9 +14,17 @@ import couchPic2 from '../public/couchpic2.png';
 import couchPic from '../public/bluecouchphoto.jpg';
 import pfpPic2 from '../public/pfp2.avif';
 import pfpPic from '../public/pfp.jpg';
+import { useStayTransactionStore } from '/lib/StayTransactionStore';
+import { useEffect, useState } from 'react';
 
 const useIsEligibleForInstantBook = () => {
   const { address } = useAccount();
+
+  const [scoped, setScoped] = useState(false);
+  useEffect(() => {
+    setScoped(true);
+  })
+
 
   const { data: balance, isError, isLoading } = useContractRead({
     abi: VerifierNFTAbi,
@@ -24,6 +32,10 @@ const useIsEligibleForInstantBook = () => {
     functionName: 'balanceOf',
     args: [address || '0x0'],
   });
+
+  if (!scoped) {
+    return false;
+  }
 
   if (balance && balance.gt(0)) {
     return true;
@@ -62,6 +74,7 @@ const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const router = useRouter();
+  const isEligibleForInstantBook = useIsEligibleForInstantBook();
   const { ensName, referencesNumber, vouchesNumber, personalDescription, voucherName, neighborhoodName, accommodationDescription, neighborhoodDescription, pricePerNight, listingPic, hostPic } = listingInfo;
 
   return (
@@ -138,10 +151,20 @@ const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
         </div>
         <div className="flex flex-col space-y-2">
           <GreenButton
-            className="opacity-80 bg-gray-400 shadow-none items-center flex space-x-2 justify-center text-sm"
+            className={`items-center flex space-x-2 shadow-none justify-center text-sm ${isEligibleForInstantBook ? 'bg-cyan-600' : 'bg-gray-400 opacity-80'}`}
             onClick={async () => {
+              if (!address || !isEligibleForInstantBook) {
+                return;
+              }
               const contract = new ethers.Contract(StayPlatformAddress, StayPlatformAbi, signer!);
-              await contract.createStayTransactionWithoutAuth(defaultStayRequest.startTime, defaultStayRequest.endTime, 0x0, defaultStayRequest.host, defaultStayRequest.arbitrationDeadline, defaultStayRequest.arbiter, defaultStayRequest.tokenURI, VerifierNFTAddress);
+              const transactionResponse = await contract.createStayTransactionWithoutAuth(defaultStayRequest.startTime, defaultStayRequest.endTime, 0x0, defaultStayRequest.host, defaultStayRequest.arbitrationDeadline, defaultStayRequest.arbiter, defaultStayRequest.tokenURI, VerifierNFTAddress);
+              const addStay = useStayTransactionStore(state => state.addStay);
+              // @ts-ignore
+              addStay({
+                ...defaultStayRequest, guest: address, approvalSignature: '0x0',
+              }, transactionResponse.hash);
+              router.push(`/booking/${transactionResponse.hash}`);
+
             }}>
             <BoltIcon className="h-4 w-4" />
             <div>

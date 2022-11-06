@@ -9,6 +9,7 @@ import { createListing } from '/src/routes/createListing';
 import { submitPolygonIdVerification } from '/src/routes/submitPolygonIdVerification';
 import { getPolygonIdVerificationParams } from '/src/routes/getPolygonIdVerificationParams';
 import { getReputations } from '/src/routes/getReputations';
+import { getReputationClaimOffer } from '/src/routes/getReputationClaimOffer';
 
 const main = async () => {
   const app = new Koa();
@@ -24,6 +25,8 @@ const main = async () => {
   router.post('/getPolygonIdVerificationParams', getPolygonIdVerificationParams);
   router.post('/submitPolygonIdVerification', submitPolygonIdVerification);
   router.post('/getReputations', getReputations);
+  router.post('/getReputationClaimOffer', getReputationClaimOffer);
+
   app.use(router.routes());
 
   const port = 3001;
