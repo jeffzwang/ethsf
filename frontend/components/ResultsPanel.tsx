@@ -4,7 +4,7 @@ import pfpPic from '../public/pfp.jpg';
 import { MapPinIcon, HandThumbUpIcon } from '@heroicons/react/24/solid';
 import { useSigner } from 'wagmi';
 import { ethers } from 'ethers';
-import { StayPlatformAbi } from '/deployments/StayPlatform';
+import { StayPlatformAbi, StayPlatformAddress } from '/deployments/StayPlatform';
 
 const ListingCard = () => {
   const { data: signer } = useSigner();
@@ -73,7 +73,7 @@ const ListingCard = () => {
             </div>
           </div>
           <button disabled={signer == null} onClick={async () => {
-            const contract = new ethers.Contract('0xD1501f923b5C6642482962fAd2cD4016Eb5ED2F7', StayPlatformAbi, signer!);
+            const contract = new ethers.Contract(StayPlatformAddress, StayPlatformAbi, signer!);
             await contract.createStayTransaction(0, 1, 0, '0x0', 3, '0x0', 'some_ipfs', 111, '', '');
           }}>
             Book
