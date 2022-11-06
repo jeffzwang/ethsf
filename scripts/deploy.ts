@@ -35,14 +35,14 @@ async function main() {
   };
 
   const req = {
-    startTime: 0,
-    endTime: 1,
+    startTime: 1667748072,
+    endTime: 1668007272,
     price: 0,
     guest: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', // account 10
     host: await hostWallet.getAddress(),
-    arbitrationDeadline: 3,
+    arbitrationDeadline: 1668093672,
     arbiter: '0x0000000000000000000000000000000000000000',
-    tokenURI: 'https://example.com',
+    tokenURI: 'QmNjjbQqpeRiV3MLSpHmVWaxVnP1b1buAFuJec7r2xNmYW',
   };
 
   const signature = await hostWallet._signTypedData(domain, { StayTransaction }, req);

@@ -10,14 +10,8 @@ pragma solidity ^0.8.15;
 contract ExampleVerifier is ZKPVerifier, ERC721 {
     uint256 counter = 0;
     uint64 public constant TRANSFER_REQUEST_ID = 1;
-    // we wouldn't do this in production, but this makes it easier to do
-    // hardhat testing
-    StayPlatform private stayPlatform;
 
-    // constructor that sets address owner.
-    constructor(address stayPlatformAddr) ERC721("ExampleVerifier", "EXAMPLE") {
-        stayPlatform = StayPlatform(stayPlatformAddr);
-    }
+    constructor() ERC721("ExampleVerifier", "EXAMPLE") {}
 
     function _beforeProofSubmit(
         uint64, /* requestId */

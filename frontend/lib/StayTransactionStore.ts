@@ -1,12 +1,11 @@
-import create from 'zustand'
-import { persist } from 'zustand/middleware'
-import { StayRequestApproval } from '/lib/stayTypes'
+import create from 'zustand';
+import { persist } from 'zustand/middleware';
+import { StayRequestApproval } from '/lib/stayTypes';
 
 type StayTransactionState = {
   stayByHash: Record<string, StayRequestApproval>,
   addStay: (stay: StayRequestApproval, hash: string) => void,
 }
-
 
 const useStayTransactionStore = create<StayTransactionState>()(
   persist(
@@ -16,8 +15,8 @@ const useStayTransactionStore = create<StayTransactionState>()(
     }),
     { name: 'stay-hash-store' }
   )
-)
+);
 
 export {
   useStayTransactionStore,
-}
+};

@@ -13,7 +13,7 @@ async function main() {
   console.log('stayplatform deployed to:', stayPlatform.address);
 
   const ExampleVerifier = await ethers.getContractFactory('ExampleVerifier');
-  const exampleVerifier = await ExampleVerifier.deploy(stayPlatform.address);
+  const exampleVerifier = await ExampleVerifier.deploy();
 
   await exampleVerifier.deployed();
 

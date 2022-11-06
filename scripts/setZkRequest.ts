@@ -21,7 +21,7 @@ async function main() {
   };
 
   // add the address of the contract just deployed
-  const ExampleVerifierAddress = '0x4ff2DcE59593FE35337c5f9Fa844c990c86d54be';
+  const ExampleVerifierAddress = '0xD1BfD5d41b50Ff0d072a5552665F08f32a2cCf37';
 
   let exampleVerifier = await ethers.getContractAt('ExampleVerifier', ExampleVerifierAddress);
 
