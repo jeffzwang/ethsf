@@ -1,12 +1,15 @@
+import { ListingInfo } from '/components/ResultsPanel';
 import { getTransactionKey } from '/lib/KeyFactory';
 import { useStayTransactionStore } from '/lib/StayTransactionStore';
 import { useTransaction } from '/lib/useTransaction';
 import Listing from '/pages/listing';
 
 const BookedStay = ({
-  transactionHash
+  transactionHash,
+  listingInfo,
 }: {
   transactionHash: string;
+  listingInfo: ListingInfo;
 }) => {
   const {
     transaction,
@@ -26,7 +29,7 @@ const BookedStay = ({
           <span className="sr-only">Loading...</span>
         </div>) : (<div className="text-green-800 font-bold">Your booking went through!</div>)}
       </div>
-      {Listing()}
+      {Listing(listingInfo)}
     </div >
   );
 };

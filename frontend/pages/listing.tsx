@@ -1,29 +1,28 @@
 import Image from 'next/image';
-import pfpPic from '../public/pfp.jpg';
-import couchPic from '../public/bluecouchphoto.jpg';
-import furnishedCouchPic from '../public/furnishedcouchphoto.jpeg';
 import { InformationCircleIcon, MapPinIcon, ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/solid';
 import router from 'next/router';
+import { ListingInfo } from '/components/ResultsPanel';
 
-const HostProfileSection = () => {
+const HostProfileSection = (props: {listingInfo: ListingInfo}) => {
+  const { hostAddress, ensName, referencesNumber, vouchesNumber, personalDescription, ipfsHash, voucherName, neighborhoodName, accommodationDescription, neighborhoodDescription, pricePerNight, lensFollowers, listingPic, hostPic } = props.listingInfo;
   return (
     <div className="w-[170px] rounded overflow-hidden flex flex-col shadow-[0px_3px_6px_rgba(146,151,160,0.52)] bg-eggshell mr-4">
       <div className="w-[170px]">
-        <Image src={pfpPic} alt="picture of host" />
+        <Image src={hostPic} alt="picture of host" />
 
       </div>
       <div className="p-4 flex flex-col  text-sm">
         <div className="font-semibold text-xl mb-2">
-          ashley.eth
+          {ensName}
         </div>
         <div className="flex mb-4">
-          ex-MetaMask. buidlin
+          {personalDescription}
         </div>
         <div className="font-light">
-          Vouched by: <span className="font-normal">7</span>
+          Vouched by: <span className="font-normal">{vouchesNumber}</span>
         </div>
         <div className="font-light">
-          References: <span className="font-normal">21</span>
+          References: <span className="font-normal">{referencesNumber}</span>
         </div>
         <div className="font-light">
           Sex: <span className="font-normal">Female</span>
@@ -33,42 +32,33 @@ const HostProfileSection = () => {
   );
 };
 
-const ListingPanel = () => {
+const ListingPanel = (props: {listingInfo: ListingInfo}) => {
+  const { hostAddress, ensName, referencesNumber, vouchesNumber, personalDescription, ipfsHash, voucherName, neighborhoodName, accommodationDescription, neighborhoodDescription, pricePerNight, lensFollowers, listingPic, hostPic } = props.listingInfo;
   return (
     <div className="flex-1 rounded overflow-hidden flex flex-col shadow-[0px_3px_6px_rgba(146,151,160,0.52)] bg-eggshell ">
       <div className="flex" >
         <div className="">
-          <Image height={120} src={couchPic} alt="picture of listing" />
+          <Image height={120} src={listingPic} alt="picture of listing" />
         </div>
-        <div className="">
-          <Image height={120} src={furnishedCouchPic} alt="picture of listing" />
-        </div>
-        {/* <div className=""> */}
-        {/*   <Image height={120} src={couchPic} alt="picture of listing" /> */}
-        {/* </div> */}
-        {/* <div className=""> */}
-        {/*   <Image height={120} src={furnishedCouchPic} alt="picture of listing" /> */}
-        {/* </div> */}
       </div>
       <div className="p-2">
         <div className="flex items-center space-x-2">
           <MapPinIcon className="h-4 w-4" />
           <div className="flex-1 font-semibold">
-            Marina District, SF
+            {neighborhoodName}
           </div>
           <div className="text-blue-700 text-[10px] flex items-center space-x-1">
             <InformationCircleIcon className="h-3 w-3" />
             <div>
               Host will message exact location shortly before arrival.
-
             </div>
           </div>
         </div>
         <div className="m-2 text-sm">
-          Couch in the living room
+          {accommodationDescription}
         </div>
         <div className="m-2 text-[10px] w-[300px]">
-          20min walk to the ETH SF Hackathon venue. It’s a nice couch that also converts to a futon. I’m looking to make new frens in crypto, while making money to support myself doing art. You’ll sometimes hear the fog horns, but otherwise my place is very quiet. The beautiful view of the bay is a bonus!
+          {neighborhoodDescription}
         </div>
         <div className=" border-b border-black" />
         <div className="flex">
@@ -78,7 +68,7 @@ const ListingPanel = () => {
                 Arrival Date
               </div>
               <div className="flex-[3]">
-                November 6, 2022
+                November 4, 2022
               </div>
             </div>
             <div className="flex">
@@ -86,7 +76,7 @@ const ListingPanel = () => {
                 Departure Date
               </div>
               <div className="flex-[3]">
-                November 8, 2022
+                November 6, 2022
               </div>
             </div>
           </div>
@@ -103,19 +93,11 @@ const ListingPanel = () => {
   );
 };
 
-const BookPanel = () => {
-  return (
-    <div className="">
-    </div>
-  );
-};
-
-export default function Listing() {
+export default function Listing(listingInfo: ListingInfo) {
   return (
     <div className="flex space-x-4">
-      <HostProfileSection />
-      <ListingPanel />
-      <BookPanel />
+      <HostProfileSection listingInfo={listingInfo} />
+      <ListingPanel listingInfo={listingInfo} />
     </div>
   );
 }
