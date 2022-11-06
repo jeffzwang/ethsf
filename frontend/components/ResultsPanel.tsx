@@ -218,7 +218,6 @@ const ListingCard = ({ listingInfo }: {listingInfo: ListingInfo}) => {
             Request to book
           </GreenButton>
         </div>
-
       </div >
     </div >
   );
@@ -249,7 +248,7 @@ const listingInfo2: ListingInfo = {
   vouchesNumber: 3,
   personalDescription: 'Full time web2, part time web3',
   // real
-  ipfsHash: 'QmYcYP5XzgAMD1SnNavEgbu4iSoptBGVuMwNzcVnYGNt8z',
+  ipfsHash: 'QmZFGaHBF2Arm7zNEgafKrL7bQkXsi33rQ1BAPVkR1DfZN',
   voucherName: 'vitalik.eth',
   neighborhoodName: 'Mission District, SF',
   accommodationDescription: 'Sofa bed in upstairs corner',
@@ -266,8 +265,8 @@ const listingInfo3: ListingInfo = {
   referencesNumber: 20,
   vouchesNumber: 1,
   personalDescription: 'ETH maxi. I like to code and play with my dog. GPT-3 said this.',
-  // fake
-  ipfsHash: 'QmYcYP5XzgAMD1SnNavEgbu4iSoptBGVuMwNzcVnYGNt8z',
+  // real
+  ipfsHash: 'QmZxW4v2jYTsJM29KrUng7pthwVfgddhQRSeenQjTnDpDK',
   voucherName: 'none',
   neighborhoodName: 'Lower Haight, SF',
   accommodationDescription: 'Spare room',
@@ -284,8 +283,8 @@ const listingInfo4: ListingInfo = {
   referencesNumber: 0,
   vouchesNumber: 0,
   personalDescription: 'Who likes it when I say "I\'m a web3 developer"? Svelte and Ethers.js!',
-  // fake
-  ipfsHash: 'QmYcYP5XzgAMD1SnNavEgbu4iSoptBGVuMwNzcVnYGNt8z',
+  // real
+  ipfsHash: 'QmcbffFc4gR2CB3ZVDvSUDYmJzFCjU9vQ9puUFP9SECh1z',
   voucherName: 'none',
   neighborhoodName: 'Sunset District, SF',
   accommodationDescription: 'Basement - promise it is not that bad!',

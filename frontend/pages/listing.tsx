@@ -42,12 +42,12 @@ const ListingPanel = () => {
         <div className="">
           <Image height={120} src={furnishedCouchPic} alt="picture of listing" />
         </div>
-        <div className="">
-          <Image height={120} src={couchPic} alt="picture of listing" />
-        </div>
-        <div className="">
-          <Image height={120} src={furnishedCouchPic} alt="picture of listing" />
-        </div>
+        {/* <div className=""> */}
+        {/*   <Image height={120} src={couchPic} alt="picture of listing" /> */}
+        {/* </div> */}
+        {/* <div className=""> */}
+        {/*   <Image height={120} src={furnishedCouchPic} alt="picture of listing" /> */}
+        {/* </div> */}
       </div>
       <div className="m-2 flex space-x-2">
         <MapPinIcon className="h-3 w-3" />
