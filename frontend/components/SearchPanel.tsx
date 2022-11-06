@@ -41,7 +41,6 @@ const SearchPanel = () => {
         </div>
         <div className="flex space-x-4">
           <SearchParameterBox Icon={HandThumbUpIcon} title="Vouched by">
-            Nouns DAO member, Wadeful.eth
           </SearchParameterBox>
           <div className="flex-1 flex justify-end">
             <ChunkyButton title="Search" className="self-center px-12 py-2 rounded-full" />
