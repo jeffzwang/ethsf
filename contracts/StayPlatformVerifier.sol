@@ -3,6 +3,6 @@
 
 pragma solidity ^0.8.15;
 
-interface IVerifier {
-    function verify(address guest) external view returns (bool verified);
+interface StayPlatformVerifier {
+    function verify(address guest) external view returns (address);
 }

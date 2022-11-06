@@ -8,6 +8,8 @@ import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 // for console.log usage
 import "hardhat/console.sol";
 
+import "./StayPlatformVerifier.sol";
+
 contract StayPlatform is ERC2771Context, ERC721, EIP712 {
     using Strings for uint256;
 
@@ -141,6 +143,11 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
         address verifierAddress
     ) public payable returns (uint256 tokenId) {
         require(host != _msgSender(), "host cannot be guest");
+        StayPlatformVerifier verifier = StayPlatformVerifier(verifierAddress);
+        require(
+            verifier.verify(_msgSender()) != address(0),
+            "guest does not pass verification"
+        );
 
         ERC20 usdc = ERC20(erc20ContractAddress);
         bool transferSuccess = usdc.transferFrom(
