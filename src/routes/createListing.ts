@@ -12,7 +12,8 @@ export type ListingInfo = {
   neighborhoodName: string;
   accommodationDescription: string;
   neighborhoodDescription: string;
-  pricePerNight: string;
+  pricePerNight: number;
+  lensFollowers: number;
 }
 
 const pinata = new pinataSDK(process.env.PINATA_API_KEY!, process.env.PINATA_API_SECRET!);

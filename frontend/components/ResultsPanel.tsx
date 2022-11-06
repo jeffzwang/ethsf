@@ -16,6 +16,7 @@ import pfpPic2 from '../public/pfp2.avif';
 import pfpPic from '../public/pfp.jpg';
 import { useStayTransactionStore } from '/lib/StayTransactionStore';
 import { useEffect, useState } from 'react';
+import { randomUUID } from 'crypto';
 
 const useIsEligibleForInstantBook = () => {
   const { address } = useAccount();
@@ -54,9 +55,20 @@ export type ListingInfo = {
   neighborhoodName: string;
   accommodationDescription: string;
   neighborhoodDescription: string;
-  pricePerNight: string;
+  pricePerNight: number;
+  lensFollowers: number;
   listingPic: StaticImageData;
   hostPic: StaticImageData;
+}
+
+// A ES5 function that automatically generates a random string of length 10 without using randomUUID.
+function generateRandomString() {
+  let text = "";
+  const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (let i = 0; i < 10; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
 }
 
 const defaultStayRequest = {
@@ -66,7 +78,7 @@ const defaultStayRequest = {
   host: '0xc942c9a53012a24c466718f37B31Ed5251a06982',
   arbitrationDeadline: ethers.utils.hexlify(1668093672),
   arbiter: '0x0000000000000000000000000000000000000000',
-  tokenURI: 'QmNjjbQqpeRiV3MLSpHmVWaxVnP1b1buAFuJec7r2xNmYW',
+  tokenURI: 'QmNjjbQqpeRiV3MLSpHmVWaxVnP1b1buAFuJec7r2xNmYW' + generateRandomString(),
 };
 
 // pass ListingInfo in as props.
@@ -75,7 +87,9 @@ const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
   const { address } = useAccount();
   const router = useRouter();
   const isEligibleForInstantBook = useIsEligibleForInstantBook();
-  const { ensName, referencesNumber, vouchesNumber, personalDescription, voucherName, neighborhoodName, accommodationDescription, neighborhoodDescription, pricePerNight, listingPic, hostPic } = listingInfo;
+  const addStay = useStayTransactionStore(state => state.addStay);
+
+  const { ensName, referencesNumber, vouchesNumber, personalDescription, voucherName, neighborhoodName, accommodationDescription, neighborhoodDescription, pricePerNight, listingPic, hostPic, lensFollowers } = listingInfo;
 
   return (
     <div className="flex bg-white">
@@ -106,6 +120,14 @@ const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
                 </div>
                 <div className="font-semibold">
                   {vouchesNumber}
+                </div>
+              </div>
+              <div className="flex space-x-2">
+                <div className="font">
+                  Lens Followers
+                </div>
+                <div className="font-semibold">
+                  {lensFollowers}
                 </div>
               </div>
             </div>
@@ -146,7 +168,7 @@ const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
         <div className="self-end flex-1 flex items-center text-2xl font-semibold space-x-2">
           <USDCIcon className="w-6 h-6" color="" />
           <div>
-            {pricePerNight}
+            {pricePerNight.toString()}
           </div>
         </div>
         <div className="flex flex-col space-y-2">
@@ -158,7 +180,6 @@ const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
               }
               const contract = new ethers.Contract(StayPlatformAddress, StayPlatformAbi, signer!);
               const transactionResponse = await contract.createStayTransactionWithoutAuth(defaultStayRequest.startTime, defaultStayRequest.endTime, 0x0, defaultStayRequest.host, defaultStayRequest.arbitrationDeadline, defaultStayRequest.arbiter, defaultStayRequest.tokenURI, VerifierNFTAddress);
-              const addStay = useStayTransactionStore(state => state.addStay);
               // @ts-ignore
               addStay({
                 ...defaultStayRequest, guest: address, approvalSignature: '0x0',
@@ -185,7 +206,7 @@ const ListingCard = ({ listingInfo }: { listingInfo: ListingInfo }) => {
                 host: '0xc942c9a53012a24c466718f37B31Ed5251a06982',
                 arbitrationDeadline: ethers.utils.hexlify(1668093672),
                 arbiter: '0x0000000000000000000000000000000000000000',
-                tokenURI: 'QmNjjbQqpeRiV3MLSpHmVWaxVnP1b1buAFuJec7r2xNmYW',
+                tokenURI: 'QmNjjbQqpeRiV3MLSpHmVWaxVnP1b1buAFuJec7r2xNmYW' + randomUUID(),
               };
               //@ts-ignore
               await sendRequestToBook(signer!, stayRequest);
@@ -212,7 +233,8 @@ const listingInfo1: ListingInfo = {
   neighborhoodName: 'Marina District, SF',
   accommodationDescription: 'Couch in the living room',
   neighborhoodDescription: '20 min walk to the EthSF hackathon venue. Nice couch that also converts to a futon. I\'m looking to make new frens in crypto, while supporting myself to make art',
-  pricePerNight: '40',
+  pricePerNight: 40,
+  lensFollowers: 19,
   listingPic: couchPic,
   hostPic: pfpPic,
 };
@@ -229,16 +251,25 @@ const listingInfo2: ListingInfo = {
   neighborhoodName: 'Mission District, SF',
   accommodationDescription: 'Sofa bed in upstairs corner',
   neighborhoodDescription: 'Vibrant part of the Mission. Near the 16th St. BART station.',
-  pricePerNight: '30',
+  pricePerNight: 30,
+  lensFollowers: 0,
   listingPic: couchPic2,
   hostPic: pfpPic2,
 };
 
 const ResultsPanel = () => {
+  // TODO: when polygon ID on mainnet, fetch listings from IPFS.
+  const listingInfoArr = [listingInfo1, listingInfo2];
   return (
     <div className="bg-lightSky space-y-2 p-2 rounded-md">
-      <ListingCard listingInfo={listingInfo1} />
-      <ListingCard listingInfo={listingInfo2} />
+      {listingInfoArr.map((listingInfo, index) => {
+        return (
+          <ListingCard
+            key={index}
+            listingInfo={listingInfo}
+          />
+        );
+      })}
     </div>
   );
 };
