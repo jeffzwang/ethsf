@@ -12,17 +12,19 @@ module.exports = {
     extend: {
       colors: {
         sky: '#7DAEDF',
+        lightSky: '#B8DAFF',
         dusk: '#E2CABE',
         aqua: '#1336AB',
         water: '#65A2DE',
         stone: '#7E7E7E',
+        graphite: '#393939',
         eggshell: '#FAFAFA',
         shimmer: '#F4F7FA',
       },
       fontFamily: {
         mono: ['ibm-plex-mono', ...defaultTheme.fontFamily.mono],
         sans: ['source-sans-3', ...defaultTheme.fontFamily.sans],
-        serif: [...defaultTheme.fontFamily.serif]
+        serif: ['Tekst', ...defaultTheme.fontFamily.serif]
       }
     },
   },

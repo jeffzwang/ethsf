@@ -1,0 +1,27 @@
+@font-face {
+  font-family: "Tekst";
+  src: url('Tekst/Tekst-DRoman.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Tekst";
+  src: url('Tekst/Tekst-DBold.woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Tekst";
+  src: url('Tekst/Tekst-DBoldItalic.woff');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Tekst";
+  src: url('Tekst/Tekst-DItalic.woff');
+  font-weight: normal;
+  font-style: italic;
+}

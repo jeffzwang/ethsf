@@ -1,4 +1,5 @@
 @import url('https://use.typekit.net/qzf4mig.css');
+@import "../public/fonts/style.css";
 
 @tailwind base;
 @tailwind components;
@@ -6,6 +7,7 @@
 
 html,
 body {
+  height: 100%;
   padding: 0;
   margin: 0;
   /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -19,6 +21,16 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+#__next {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+div[data-rk] {
+  flex: 1;
 }
 
 @media (prefers-color-scheme: dark) {
