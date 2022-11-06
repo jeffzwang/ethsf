@@ -50,7 +50,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <div className="bg-gradient-to-b from-sky to-dusk py-4 px-12 flex flex-col h-full space-y-4">
             <div className="flex items-center justify-between">
               <div className="text-eggshell text-xl font-semibold font-serif">
-                Decentralized Couchsurfing - Powered by Polygon
+                Decentralized Couchsurfing - powered by Polygon
               </div>
               <div className="flex items-center text-sm font-semibold font-mono space-x-8 text-eggshell">
                 <button>

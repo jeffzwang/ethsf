@@ -1,14 +1,15 @@
 import { QRCodeSVG } from 'qrcode.react';
+import { VerifierNFTAddress } from '/deployments/VerifierNFT';
 
 const QRCode = () => {
   return (
-    <QRCodeSVG value={JSON.stringify({
+    <QRCodeSVG size={500} value={JSON.stringify({
       'id': 'c811849d-6bfb-4d85-936e-3d9759c7f105',
       'typ': 'application/iden3comm-plain-json',
       'type': 'https://iden3-communication.io/proofs/1.0/contract-invoke-request',
       'body': {
         'transaction_data': {
-          'contract_address': '0xD1BfD5d41b50Ff0d072a5552665F08f32a2cCf37',
+          'contract_address': VerifierNFTAddress,
           'method_id': 'b68967e2',
           'chain_id': 80001,
           'network': 'polygon-mumbai'
