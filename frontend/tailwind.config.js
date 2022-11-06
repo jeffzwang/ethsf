@@ -20,6 +20,7 @@ module.exports = {
         graphite: '#393939',
         eggshell: '#FAFAFA',
         shimmer: '#F4F7FA',
+        forest: '#30633C',
       },
       fontFamily: {
         mono: ['ibm-plex-mono', ...defaultTheme.fontFamily.mono],

@@ -12,6 +12,7 @@
     "@heroicons/react": "^2.0.13",
     "@rainbow-me/rainbowkit": "^0.7.4",
     "@rehooks/local-storage": "^2.4.4",
+    "@tanstack/react-query": "^4.14.3",
     "@types/node": "18.11.9",
     "@types/react-dom": "18.0.8",
     "@xmtp/xmtp-js": "^7.0.1",
@@ -23,7 +24,8 @@
     "react-dom": "18.2.0",
     "react-qr-code": "^2.0.8",
     "typescript": "4.8.4",
-    "wagmi": "^0.7.12"
+    "wagmi": "^0.7.12",
+    "zustand": "^4.1.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.25",
