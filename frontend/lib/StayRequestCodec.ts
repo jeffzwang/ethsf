@@ -1,12 +1,11 @@
-import { ContentCodec, ContentTypeId } from '@xmtp/xmtp-js';
+import {  ContentTypeId } from '@xmtp/xmtp-js';
 
 export const ContentTypeText = new ContentTypeId({
   authorityId: 'xmtp.org',
   typeId: 'text',
   versionMajor: 1,
   versionMinor: 0,
-})
-
+});
 
 export type StayRequest = {
   startTime: string,

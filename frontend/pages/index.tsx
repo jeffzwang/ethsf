@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import EventSelector from '/components/EventSelector';
 import ResultsPanel from '/components/ResultsPanel';
 import SearchPanel from '/components/SearchPanel';
 

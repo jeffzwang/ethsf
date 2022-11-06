@@ -3,7 +3,6 @@ dotenv.config();
 import { ethers } from 'hardhat';
 
 async function main() {
-
   const circuitId = 'credentialAtomicQuerySig';
   const validatorAddress = '0xb1e86C4c687B85520eF4fd2a0d14e81970a15aFB';
 
@@ -22,7 +21,7 @@ async function main() {
   };
 
   // add the address of the contract just deployed
-  const ExampleVerifierAddress = '0xD1501f923b5C6642482962fAd2cD4016Eb5ED2F7';
+  const ExampleVerifierAddress = '0x4ff2DcE59593FE35337c5f9Fa844c990c86d54be';
 
   let exampleVerifier = await ethers.getContractAt('ExampleVerifier', ExampleVerifierAddress);
 
