@@ -49,6 +49,8 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
     mapping(address => uint256) public guestNetRatings;
     mapping(address => uint256) public guestTotalRatings;
 
+    mapping(address => address) private verifierAddrToHostAddr;
+
     // Base URI
     string private _baseURIextended;
 
@@ -139,15 +141,14 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
         address host,
         uint256 arbitrationDeadline,
         address arbiter,
-        string memory _tokenURI,
-        address verifierAddress
+        string memory _tokenURI
     ) public payable returns (uint256 tokenId) {
-        require(host != _msgSender(), "host cannot be guest");
-        StayPlatformVerifier verifier = StayPlatformVerifier(verifierAddress);
+        // Make sure the verifier was registered.
         require(
-            verifier.verify(_msgSender()) != address(0),
-            "guest does not pass verification"
+            verifierAddrToHostAddr[_msgSender()] == host,
+            "verifier address not found"
         );
+        require(startTime < endTime, "startTime must be before endTime");
 
         ERC20 usdc = ERC20(erc20ContractAddress);
         bool transferSuccess = usdc.transferFrom(
@@ -324,5 +325,10 @@ contract StayPlatform is ERC2771Context, ERC721, EIP712 {
             guestNetRatings[transaction.guest] -= 1;
         }
         stayTransactions[tokenID].guestWasRated = true;
+    }
+
+    function addVerifier(address verifierAddress) public {
+        // This way, we guarantee that the host gave permission.
+        verifierAddrToHostAddr[verifierAddress] = _msgSender();
     }
 }
