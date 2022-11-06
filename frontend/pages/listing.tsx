@@ -39,8 +39,8 @@ const ListingPanel = (props: {listingInfo: ListingInfo}) => {
       <div className="flex" >
         <div className="">
           <Image height={120} src={listingPic} alt="picture of listing" />
-        </div>
-      </div>
+        </div >
+      </div >
       <div className="p-2">
         <div className="flex items-center space-x-2">
           <MapPinIcon className="h-4 w-4" />
@@ -89,7 +89,7 @@ const ListingPanel = (props: {listingInfo: ListingInfo}) => {
         </div>
 
       </div >
-    </div>
+    </div >
   );
 };
 
