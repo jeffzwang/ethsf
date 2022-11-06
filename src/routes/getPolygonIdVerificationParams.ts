@@ -8,8 +8,8 @@ export const getPolygonIdVerificationParams = async (
 ) => {
   const hostUrl = 'https://b19d-199-116-74-105.ngrok.io';
   const sessionId = 1;
-  const callbackURL = "/submitPolygonIdVerification"
-  const audience = "1125GJqgw6YEsKFwj63GY87MMxPL9kwDKxPUiwMLNZ"
+  const callbackURL = '/submitPolygonIdVerification';
+  const audience = '1125GJqgw6YEsKFwj63GY87MMxPL9kwDKxPUiwMLNZ';
 
   const uri = `${hostUrl}${callbackURL}?sessionId=${sessionId}`;
 
@@ -50,7 +50,7 @@ export const getPolygonIdVerificationParams = async (
   // Store zk request in map associated with session ID
 
   const sessionKey = PolygonIdVerificationContext.generateSessionKey(request);
-  sessionKey
+  sessionKey;
   ctx.status = 200;
   ctx.body = request;
   ctx.message = 'Success';

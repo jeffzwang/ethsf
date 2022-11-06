@@ -15,14 +15,12 @@ import {
 import {
   QueryClient,
   QueryClientProvider,
-} from '@tanstack/react-query'
+} from '@tanstack/react-query';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
 import EventSelector from '/components/EventSelector';
 import ConnectWalletButton from '/components/ConnectWalletButton';
 
 const queryClient = new QueryClient();
-
 
 const { chains, provider } = configureChains(
   [chain.polygonMumbai],

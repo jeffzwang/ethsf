@@ -8,7 +8,7 @@ const QRCode = () => {
       'type': 'https://iden3-communication.io/proofs/1.0/contract-invoke-request',
       'body': {
         'transaction_data': {
-          'contract_address': '0x4ff2DcE59593FE35337c5f9Fa844c990c86d54be',
+          'contract_address': '0xD1BfD5d41b50Ff0d072a5552665F08f32a2cCf37',
           'method_id': 'b68967e2',
           'chain_id': 80001,
           'network': 'polygon-mumbai'
