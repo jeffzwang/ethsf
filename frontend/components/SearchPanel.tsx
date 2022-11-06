@@ -29,7 +29,6 @@ const SearchPanel = () => {
     <div className="flex flex-col rounded-md bg-white p-2 border border-[1px_solid_rgba(240,240,239,0.3)] shadow-[0_4px_8px_rgba(160,164,172,0.6)">
       <div className="flex flex-col bg-gray-200 p-2 space-y-2">
         <SearchParameterBox Icon={MapPinIcon} title="Going to">
-
           San Francisco, CA, USA
         </SearchParameterBox>
         <div className="flex space-x-2">
