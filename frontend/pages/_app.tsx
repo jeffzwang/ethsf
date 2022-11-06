@@ -19,6 +19,7 @@ import {
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import EventSelector from '/components/EventSelector';
 import ConnectWalletButton from '/components/ConnectWalletButton';
+import PolygonIcon from '/icons/PolygonIcon';
 
 const queryClient = new QueryClient();
 
@@ -49,8 +50,8 @@ export default function App({ Component, pageProps }: AppProps) {
           <div className="bg-gradient-to-b from-sky to-dusk py-4 px-12 flex flex-col h-full space-y-4">
             <div className="flex items-center justify-between">
               <a href="/">
-                <div className="text-eggshell text-xl font-semibold font-serif">
-                  Decentralized Couchsurfing
+                <div className="text-eggshell text-xl font-semibold font-serif space-x-2 flex items-center">
+                  <div><PolygonIcon className="w-5 h-5" /></div><div>Couch Decentral </div>
                 </div>
               </a>
               <div className="flex items-center text-sm font-semibold font-mono space-x-8 text-eggshell">

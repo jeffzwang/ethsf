@@ -43,12 +43,12 @@ const ListingPanel = () => {
         <div className="">
           <Image height={120} src={furnishedCouchPic} alt="picture of listing" />
         </div>
-        <div className="">
-          <Image height={120} src={couchPic} alt="picture of listing" />
-        </div>
-        <div className="">
-          <Image height={120} src={furnishedCouchPic} alt="picture of listing" />
-        </div>
+        {/* <div className=""> */}
+        {/*   <Image height={120} src={couchPic} alt="picture of listing" /> */}
+        {/* </div> */}
+        {/* <div className=""> */}
+        {/*   <Image height={120} src={furnishedCouchPic} alt="picture of listing" /> */}
+        {/* </div> */}
       </div>
       <div className="p-2">
         <div className="flex items-center space-x-2">

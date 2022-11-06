@@ -17,7 +17,8 @@ export const getListings = async (
   await Promise.all(
     pinataResp.rows.map(async (row) => {
       const hash = row.ipfs_pin_hash;
-      const resp = await axios.get('https://gateway.pinata.cloud/ipfs/' + hash);
+      const resp = await axios.get('https://gateway.ipfs.io/ipfs/' + hash);
+      // const resp = await axios.get('https://gateway.pinata.cloud/ipfs/' + hash);
       const data = resp.data;
       console.log('data', data);
       listings = data;
